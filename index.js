@@ -205,6 +205,20 @@ app.get("/", (req, res) => res.send("Lothis WhatsApp Bot is running ✨"));
 
 // ---------- Start ----------
 const PORT = process.env.PORT || 3000;
+app.get("/debug/assistant", async (req, res) => {
+  const r = await fetch(
+    `https://api.openai.com/v1/assistants/${process.env.OPENAI_ASSISTANT_ID}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        "OpenAI-Beta": "assistants=v2"
+      }
+    }
+  );
+  const t = await r.text();
+  res.status(r.status).send(t);
+});
 app.listen(PORT, () => {
   console.log(`Lothis WhatsApp Bot running on :${PORT}`);
 });
